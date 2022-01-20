@@ -28,7 +28,7 @@ class TextProcessor:
         pass
 
     def hamming(self, x: int, y: int) -> int:
-        # 2-4
+
         pass
 
 
