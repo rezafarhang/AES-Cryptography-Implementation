@@ -27,8 +27,14 @@ class TextProcessor:
         # 2-3
         pass
 
-    def hamming(self, x: int, y: int) -> int:
-
+    @staticmethod
+    def hamming(x: str, y: str) -> int:
+        distance = 0
+        for i in range(31, -1, -1):
+            x_bit = int(x, 2) >> i & 1
+            y_bit = int(y, 2) >> i & 1
+            distance += not (x_bit == y_bit)
+        return distance
         pass
 
 
