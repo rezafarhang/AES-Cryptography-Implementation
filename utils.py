@@ -1,4 +1,5 @@
 from typing import List
+import numpy as np
 
 
 class TextProcessor:
@@ -47,8 +48,11 @@ class EncryptDecryption:
     def sub_bytes_transform(self, value: List[list]) -> List[list]:
         pass
 
-    def shift_rows(self, value: List[list]) -> List[list]:
-        pass
+    @staticmethod
+    def shift_rows(value: List[list]) -> List[list]:
+        shifted_list = [list(np.roll(value[0], 0)), list(np.roll(value[1], 1)),
+                        list(np.roll(value[2], 2)), list(np.roll(value[3], 3))]
+        return shifted_list
 
     def mix_column(self, value: List[list]) -> List[list]:
         pass
@@ -58,3 +62,4 @@ class EncryptDecryption:
 
     def _key_expansion(self, value: List[list]) -> List[list]:
         pass
+
