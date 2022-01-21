@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 import numpy as np
 
 
@@ -41,9 +41,12 @@ class TextProcessor:
 
 class EncryptDecryption:
     def __init__(self, plain: str, key: str):
+        # EN for encryption and DE for Decryption
+        self.mode = 'EN'
+
         self.plain = plain
         self.cypher = ''
-        self.key = key
+        self.key: list = self._key_expansion(key)
 
     SBox = [
         0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
@@ -82,16 +85,13 @@ class EncryptDecryption:
         0x17, 0x2b, 0x04, 0x7e, 0xba, 0x77, 0xd6, 0x26, 0xe1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0c, 0x7d
     ]
 
-    def encryption_sub_bytes_transform(self, value: List[list]) -> List[list]:
-        for i in range(4):
-            for j in range(4):
-                value[i][j] = self.SBox[4 * i + j]
-        return value
+    def sub_bytes_transform(self, value: List[list]) -> List[list]:
+        s_box = self.SBox if self.mode == "EN" else self.SBoxInv
 
-    def decryption_sub_bytes_transform(self, value: List[list]) -> List[list]:
         for i in range(4):
             for j in range(4):
-                value[i][j] = self.SBoxInv[4 * i + j]
+                value[i][j] = s_box[4 * i + j]
+
         return value
 
     @staticmethod
@@ -106,6 +106,34 @@ class EncryptDecryption:
     def add_round_key(self, value: List[list]) -> List[list]:
         pass
 
-    def _key_expansion(self, value: List[list]) -> List[list]:
+    def _key_expansion(self, key: str) -> List[str]:
         pass
+        # def g(word, r):
+        #     def r_con(r):
+        #         rc = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+        #         return rc[r]
+        #
+        #     def sub_word(word):
+        #         s_box = self.SBox if self.mode == "EN" else self.SBoxInv
+        #         result = ''
+        #         for i in range(0, 8, 2):
+        #             result += s_box[int(word[i: i+2], 16)]
+        #         return result
+        #
+        #     def rot_word(word):
+        #         return f'{word[-2:]}{word[:-2]}'
+        #
+        #     word = sub_word(rot_word(word))
+        #     return hex(int(word[:2], 16) ^ r_con(r)) + hex(int(word[2:], 16) ^ 0)
+        #
+        # def x_or(w1, w2):
+        #     return hex(int(w1, 16) ^ int(w2, 16))
+        #
+        # keys = [key, ]
+        # for i in range(11):
+        #     k = keys[-1]
+        #     g_result = g(k[25:], i)
+        #
+        #     w0 = x_or(g_result, k[:8])
+        #     w1 = x_or(w0, k[:8])
 
