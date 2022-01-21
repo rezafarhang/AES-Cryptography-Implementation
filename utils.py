@@ -116,6 +116,20 @@ class EncryptDecryption:
                         list(np.roll(value[2], 2)), list(np.roll(value[3], 3))]
         return shifted_list
 
+    @staticmethod
+    def galois_multiple(a, b):
+        p = 0
+        bit_set = 0
+        for i in range(8):
+            if b & 1 == 1:
+                p ^= a
+            bit_set = a & 0x80
+            a <<= 1
+            if bit_set == 0x80:
+                a ^= 0x1b
+            b >>= 1
+        return p % 256
+
     def mix_column(self, value: List[list]) -> List[list]:
         pass
 
@@ -152,4 +166,3 @@ class EncryptDecryption:
         #
         #     w0 = x_or(g_result, k[:8])
         #     w1 = x_or(w0, k[:8])
-
