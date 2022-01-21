@@ -135,7 +135,6 @@ class EncryptDecryption:
 
     def mix_column(self, value: List[list]) -> List[list]:
         mixed_columns = []
-
         """
         row1 = self.CONSTANT_MATRIX[0]
         col1 = np.array(self.CONSTANT_MATRIX)[:, 0]
@@ -149,10 +148,12 @@ class EncryptDecryption:
             for j in range(4):
                 row = self.CONSTANT_MATRIX[j]
                 col = np.array(value)[:, i]
-                mix.append(hex(
+                hs = hex(
                     self.galois_multiple(row[0], col[0]) ^ self.galois_multiple(row[1], col[1])
                     ^ self.galois_multiple(row[2], col[2]) ^ self.galois_multiple(row[3], col[3])
-                ))
+                )[2:]
+                hs = ''.join('0' for _ in range(2 - len(hs))) + hs
+                mix.append(hs)
             mixed_columns.append(mix.copy())
             mix.clear()
         result = []
