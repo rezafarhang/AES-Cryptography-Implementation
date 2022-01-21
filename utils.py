@@ -56,6 +56,9 @@ class TextProcessor:
 
 
 class EncryptDecryption:
+    CONSTANT_MATRIX = [[0x02, 0x03, 0x01, 0x01], [0x01, 0x02, 0x03, 0x01],
+                       [0x01, 0x01, 0x02, 0x03], [0x03, 0x01, 0x01, 0x02]]
+
     def __init__(self, plain: str, key: str):
         # EN for encryption and DE for Decryption
         self.mode = 'EN'
@@ -131,7 +134,32 @@ class EncryptDecryption:
         return p % 256
 
     def mix_column(self, value: List[list]) -> List[list]:
-        pass
+        mixed_columns = []
+
+        """
+        row1 = self.CONSTANT_MATRIX[0]
+        col1 = np.array(self.CONSTANT_MATRIX)[:, 0]
+        mixed_columns.append(
+            self.galois_multiple(row1[0], col1[0]) ^ self.galois_multiple(row1[1], col1[1])
+            ^ self.galois_multiple(row1[2], col1[2]) ^ self.galois_multiple(row1[3], col1[3])
+        )
+        """
+        for i in range(4):
+            mix = []
+            for j in range(4):
+                row = self.CONSTANT_MATRIX[j]
+                col = np.array(value)[:, i]
+                mix.append(hex(
+                    self.galois_multiple(row[0], col[0]) ^ self.galois_multiple(row[1], col[1])
+                    ^ self.galois_multiple(row[2], col[2]) ^ self.galois_multiple(row[3], col[3])
+                ))
+            mixed_columns.append(mix.copy())
+            mix.clear()
+        result = []
+        temp = np.array(mixed_columns)
+        for i in range(4):
+            result.append(list(temp[:, i]))
+        return result
 
     def add_round_key(self, value: List[list]) -> List[list]:
         pass
