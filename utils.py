@@ -62,7 +62,7 @@ class EncryptDecryption:
 
         self.plain = plain
         self.cypher = ''
-        self.key: list = self._key_expansion(key)
+        self.key: list = self._key_expansion(key.lower())
 
     SBox = [
         '63', '7c', '77', '7b', 'f2', '6b', '6f', 'c5', '30', '01', '67', '2b', 'fe', 'd7', 'ab', '76',
@@ -125,7 +125,7 @@ class EncryptDecryption:
     def _key_expansion(self, key: str) -> List[str]:
         def g(word, r):
             def r_con(r):
-                rc = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+                rc = ['01', '02', '04', '08', '10', '20', '40', '80', '1b', '36']
                 return rc[r]
 
             def sub_word(word):
@@ -136,13 +136,19 @@ class EncryptDecryption:
                 return result
 
             def rot_word(word):
-                return f'{word[-2:]}{word[:-2]}'
+                return f'{word[2:]}{word[:2]}'
 
             word = sub_word(rot_word(word))
-            return hex(int(word[:2], 16) ^ r_con(r)) + hex(int(word[2:], 16) ^ 0)[2:]
+
+            return hex(int(word[0], 16) ^ int(r_con(r)[0] ,16))[2:] +\
+                   hex(int(word[1], 16) ^ int(r_con(r)[1], 16))[2:] +\
+                   hex(int(word[2:], 16) ^ 0)[2:]
 
         def x_or(w1, w2):
-            return hex(int(w1, 16) ^ int(w2, 16))[2:]
+            hex_x_or = ''
+            for index in range(len(w1)):
+                hex_x_or += hex(int(w1[index], 16) ^ int(w2[index], 16))[2:]
+            return hex_x_or
 
         keys = [key, ]
         for i in range(10):
