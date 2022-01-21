@@ -1,4 +1,5 @@
 from typing import List
+from random import randint
 
 
 class TextProcessor:
@@ -52,3 +53,11 @@ class EncryptDecryption:
 
     def _key_expansion(self, value: List[list]) -> List[list]:
         pass
+
+
+def fill_transform_table(ls: list):
+    for i in range(8):
+        row = []
+        for j in range(8):
+            row.append(hex(randint(0, 255)))
+        ls.append(row)
