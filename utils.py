@@ -24,9 +24,14 @@ class TextProcessor:
         # 2-2
         pass
 
-    def unknown(self):
-        # 2-3
-        pass
+    @staticmethod
+    def symbolic_parsing(hexadecimal: str) -> list:
+        binary = TextProcessor.hex_to_binary(hexadecimal)
+        symbolic_result = []
+        for index, character in enumerate(binary[::-1]):
+            if character == '1':
+                symbolic_result.append(index)
+        return symbolic_result
 
     @staticmethod
     def hamming(x: str, y: str) -> int:
