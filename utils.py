@@ -20,9 +20,20 @@ class TextProcessor:
             txt += chr(int(hex_txt[index] + hex_txt[index + 1], 16))
         return txt
 
-    def hex_to_binary(self, value) -> str:
-        # 2-2
-        pass
+    @staticmethod
+    def hex_to_binary(hex_txt: str) -> str:
+        bin_txt = ''
+        for index in range(0, len(hex_txt), 2):
+            bin_result = bin(int(hex_txt[index: index + 2], 16))[2:]
+            bin_txt += ''.join('0' for _ in range(8 - len(bin_result))) + bin_result
+        return bin_txt
+
+    @staticmethod
+    def binary_to_hex(bin_txt: str) -> str:
+        hex_txt = ''
+        for index in range(0, len(bin_txt), 8):
+            hex_txt += hex(int(bin_txt[index: index + 8], 2))[2:]
+        return hex_txt
 
     @staticmethod
     def symbolic_parsing(hexadecimal: str) -> list:
