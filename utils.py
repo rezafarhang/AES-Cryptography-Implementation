@@ -145,7 +145,7 @@ class EncryptDecryption:
             return hex(int(w1, 16) ^ int(w2, 16))[2:]
 
         keys = [key, ]
-        for i in range(11):
+        for i in range(10):
             k = keys[-1]
             g_result = g(k[24:], i)
 
