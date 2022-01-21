@@ -139,10 +139,10 @@ class EncryptDecryption:
                 return f'{word[-2:]}{word[:-2]}'
 
             word = sub_word(rot_word(word))
-            return hex(int(word[:2], 16) ^ r_con(r)) + hex(int(word[2:], 16) ^ 0)
+            return hex(int(word[:2], 16) ^ r_con(r)) + hex(int(word[2:], 16) ^ 0)[2:]
 
         def x_or(w1, w2):
-            return hex(int(w1, 16) ^ int(w2, 16))
+            return hex(int(w1, 16) ^ int(w2, 16))[2:]
 
         keys = [key, ]
         for i in range(11):
