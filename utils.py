@@ -147,12 +147,12 @@ class EncryptDecryption:
         keys = [key, ]
         for i in range(11):
             k = keys[-1]
-            g_result = g(k[25:], i)
+            g_result = g(k[24:], i)
 
             w0 = x_or(g_result, k[:8])
             w1 = x_or(w0, k[8:16])
             w2 = x_or(w1, k[16:24])
-            w3 = x_or(w2, k[24:32])
+            w3 = x_or(w2, k[24:])
 
             keys.append(w0 + w1 + w2 + w3)
 
