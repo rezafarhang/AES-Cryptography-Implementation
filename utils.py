@@ -164,7 +164,6 @@ class EncryptDecryption:
             for j in range(4):
                 row = cons_m[j]
                 col = get_col(value,i)
-                print(col)
                 hs = hex(
                     self.galois_multiple(row[0], int(col[0], 16)) ^ self.galois_multiple(row[1], int(col[1], 16))
                     ^ self.galois_multiple(row[2], int(col[2], 16)) ^ self.galois_multiple(row[3], int(col[3], 16))
@@ -173,7 +172,6 @@ class EncryptDecryption:
                 mix.append(hs)
             mixed_columns.append(mix.copy())
             mix.clear()
-        print(mixed_columns)
         result = []
         temp = np.array(mixed_columns)
         for i in range(4):
