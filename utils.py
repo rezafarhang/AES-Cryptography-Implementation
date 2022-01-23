@@ -44,8 +44,8 @@ class EncryptDecryption:
 
     @staticmethod
     def shift_rows(value: List[list]) -> List[list]:
-        shifted_list = [list(np.roll(value[0], 0)), list(np.roll(value[1], 1)),
-                        list(np.roll(value[2], 2)), list(np.roll(value[3], 3))]
+        shifted_list = [list(np.roll(value[:, 0], 0)), list(np.roll(value[:, 1], 1)),
+                        list(np.roll(value[:, 2], 2)), list(np.roll(value[:, 3], 3))]
         return shifted_list
 
     def mix_column(self, value: List[list]) -> List[list]:
@@ -56,4 +56,3 @@ class EncryptDecryption:
 
     def _key_expansion(self, value: List[list]) -> List[list]:
         pass
-
