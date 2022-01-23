@@ -165,8 +165,16 @@ class EncryptDecryption:
             result.append(list(temp[:, i]))
         return result
 
-    def add_round_key(self, value: List[list]) -> List[list]:
-        pass
+    def add_round_key(self, value: str, round_key: str) -> List[list]:
+        key = round_key
+        res = ''
+        for i in range(len(value)):
+            a = TextProcessor.hex_to_binary(key[i])
+            b = TextProcessor.hex_to_binary(value[i])
+            c = int(a, 2) ^ int(b, 2)
+            c = TextProcessor.binary_to_hex(bin(c)[2:])
+            res += c
+        return res
 
     def _key_expansion(self, key: str) -> List[str]:
         def g(word, r):
