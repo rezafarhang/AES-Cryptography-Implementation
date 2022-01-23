@@ -152,8 +152,8 @@ class EncryptDecryption:
                 row = cons_m[j]
                 col = np.array(value)[:, i]
                 hs = hex(
-                    self.galois_multiple(row[0], col[0]) ^ self.galois_multiple(row[1], col[1])
-                    ^ self.galois_multiple(row[2], col[2]) ^ self.galois_multiple(row[3], col[3])
+                    self.galois_multiple(row[0], int(col[0], 16)) ^ self.galois_multiple(row[1], int(col[1], 16))
+                    ^ self.galois_multiple(row[2], int(col[2], 16)) ^ self.galois_multiple(row[3], int(col[3], 16))
                 )[2:]
                 hs = ''.join('0' for _ in range(2 - len(hs))) + hs
                 mix.append(hs)
