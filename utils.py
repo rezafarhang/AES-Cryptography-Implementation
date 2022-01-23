@@ -111,7 +111,7 @@ class EncryptDecryption:
 
         for i in range(4):
             for j in range(4):
-                value[i][j] = s_box[4 * i + j]
+                value[i][j] = s_box[int(value[i][j], 16)]
 
         return value
 
