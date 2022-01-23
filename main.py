@@ -19,22 +19,30 @@ def encrypt(plain, key):
     for i in range(1, 10):
         transform_p = obj.sub_bytes_transform(plain)
         shifted_p = obj.shift_rows(transform_p)
+        # print(shifted_p)
         mixed_p = obj.mix_column(shifted_p)
+        # print(mixed_p)
         plain_txt = obj.add_round_key(mixed_p, round_key=obj.key[i])
-        fill_plain(plain_txt)
+        print(plain_txt)
+        plain = fill_plain(plain_txt)
+        # if i==1:
+        #     return 0
 
     # 10th round
     transform_p = obj.sub_bytes_transform(plain)
+    print(transform_p)
     shifted_p = obj.shift_rows(transform_p)
+    print(len(shifted_p))
     sh_p = ''
     for j in range(4):
         for k in range(4):
             sh_p += shifted_p[j][k]
+    print(sh_p)
     p = obj.add_round_key(sh_p, obj.key[10])
-    return p
+    return p,1
 
 
-print(encrypt(plain='193DE3BEA0F4E22B9AC68D2AE9F84808', key='2B7E151628AED2A6ABF7158809CF4F3C'))
+print(encrypt(plain='3243F6A8885A308D313198A2E0370734', key='2B7E151628AED2A6ABF7158809CF4F3C'))
 # b3688ed30c1c4ee686143cc961c87a58
 
 # obj = ed(plain='b3688ed30c1c4ee686143cc961c87a58', key='2B7E151628AED2A6ABF7158809CF4F3C')

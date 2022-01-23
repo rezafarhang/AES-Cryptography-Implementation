@@ -120,16 +120,15 @@ class EncryptDecryption:
         shifted_list = []
         for i in range(4):
             l = np.array(value)[:, i]
-            shifted_list.append(list(np.roll(l,-i)))
+            shifted_list.append(list(np.roll(l, -i)))
 
-        result = []
-        for j in range(4):
-            temp = []
-            for k in range(4):
-                temp.append(shifted_list[k][j])
-            result.append(temp)
-        return result
-
+        # result = []
+        # for j in range(4):
+        #     temp = []
+        #     for k in range(4):
+        #         temp.append(shifted_list[k][j])
+        #     result.append(temp)
+        return shifted_list
 
     @staticmethod
     def galois_multiple(a, b):
@@ -146,6 +145,10 @@ class EncryptDecryption:
         return p % 256
 
     def mix_column(self, value: List[list]) -> List[list]:
+        def get_col(ls,i):
+            column = [ls[0][i], ls[1][i], ls[2][i], ls[3][i]]
+            return column
+
         cons_m = self.CONSTANT_MATRIX if self.mode == "EN" else self.INVERSE_CONSTANT_MATRIX
         mixed_columns = []
         """
@@ -160,7 +163,8 @@ class EncryptDecryption:
             mix = []
             for j in range(4):
                 row = cons_m[j]
-                col = np.array(value)[:, i]
+                col = get_col(value,i)
+                print(col)
                 hs = hex(
                     self.galois_multiple(row[0], int(col[0], 16)) ^ self.galois_multiple(row[1], int(col[1], 16))
                     ^ self.galois_multiple(row[2], int(col[2], 16)) ^ self.galois_multiple(row[3], int(col[3], 16))
@@ -169,6 +173,7 @@ class EncryptDecryption:
                 mix.append(hs)
             mixed_columns.append(mix.copy())
             mix.clear()
+        print(mixed_columns)
         result = []
         temp = np.array(mixed_columns)
         for i in range(4):
@@ -176,7 +181,7 @@ class EncryptDecryption:
         res = ''
         for j in range(4):
             for k in range(4):
-                res += result[j][k]
+                res += mixed_columns[j][k]
         return res
 
     def add_round_key(self, value: str, round_key: str) -> List[list]:
