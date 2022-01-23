@@ -59,10 +59,12 @@ class EncryptDecryption:
     CONSTANT_MATRIX = [[0x02, 0x03, 0x01, 0x01], [0x01, 0x02, 0x03, 0x01],
                        [0x01, 0x01, 0x02, 0x03], [0x03, 0x01, 0x01, 0x02]]
 
+    INVERSE_CONSTANT_MATRIX = [[0x0E, 0x0B, 0x0D, 0x09], [0x09, 0x0E, 0x0B, 0x0D],
+                               [0x0D, 0x09, 0x0E, 0x0B], [0x0B, 0x0D, 0x09, 0x0E]]
+
     def __init__(self, plain: str, key: str):
         # EN for encryption and DE for Decryption
         self.mode = 'EN'
-
         self.plain = plain
         self.cypher = ''
         self.key: list = self._key_expansion(key.lower())
@@ -134,6 +136,7 @@ class EncryptDecryption:
         return p % 256
 
     def mix_column(self, value: List[list]) -> List[list]:
+        cons_m = self.CONSTANT_MATRIX if self.mode == "EN" else self.INVERSE_CONSTANT_MATRIX
         mixed_columns = []
         """
         row1 = self.CONSTANT_MATRIX[0]
@@ -146,7 +149,7 @@ class EncryptDecryption:
         for i in range(4):
             mix = []
             for j in range(4):
-                row = self.CONSTANT_MATRIX[j]
+                row = cons_m[j]
                 col = np.array(value)[:, i]
                 hs = hex(
                     self.galois_multiple(row[0], col[0]) ^ self.galois_multiple(row[1], col[1])
@@ -166,8 +169,16 @@ class EncryptDecryption:
                 res += result[j][k]
         return res
 
-    def add_round_key(self, value: List[list]) -> List[list]:
-        pass
+    def add_round_key(self, value: str, round_key: str) -> List[list]:
+        key = round_key
+        res = ''
+        for i in range(len(value)):
+            a = TextProcessor.hex_to_binary(key[i])
+            b = TextProcessor.hex_to_binary(value[i])
+            c = int(a, 2) ^ int(b, 2)
+            c = TextProcessor.binary_to_hex(bin(c)[2:])
+            res += c
+        return res
 
     def _key_expansion(self, key: str) -> List[str]:
         def g(word, r):
@@ -179,7 +190,7 @@ class EncryptDecryption:
                 s_box = self.SBox if self.mode == "EN" else self.SBoxInv
                 result = ''
                 for i in range(0, 8, 2):
-                    result += s_box[int(word[i: i+2], 16)]
+                    result += s_box[int(word[i: i + 2], 16)]
                 return result
 
             def rot_word(word):
@@ -187,8 +198,8 @@ class EncryptDecryption:
 
             word = sub_word(rot_word(word))
 
-            return hex(int(word[0], 16) ^ int(r_con(r)[0] ,16))[2:] +\
-                   hex(int(word[1], 16) ^ int(r_con(r)[1], 16))[2:] +\
+            return hex(int(word[0], 16) ^ int(r_con(r)[0], 16))[2:] + \
+                   hex(int(word[1], 16) ^ int(r_con(r)[1], 16))[2:] + \
                    hex(int(word[2:], 16) ^ 0)[2:]
 
         def x_or(w1, w2):
