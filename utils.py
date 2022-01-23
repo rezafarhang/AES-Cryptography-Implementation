@@ -15,8 +15,8 @@ class TextProcessor:
     def hex_to_string(hex_txt: str) -> str:
         txt = ''
         for index in range(0, len(hex_txt), 2):
-            print(index)
-            print(hex_txt[index] + hex_txt[index + 1])
+            # print(index)
+            # print(hex_txt[index] + hex_txt[index + 1])
             txt += chr(int(hex_txt[index] + hex_txt[index + 1], 16))
         return txt
 
