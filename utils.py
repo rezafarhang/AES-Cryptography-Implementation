@@ -130,11 +130,6 @@ class EncryptDecryption:
             result.append(temp)
         return result
 
-    @staticmethod
-    def shift_rows_inv(value: List[list]) -> List[list]:
-        shifted_list = [list(np.roll(value[0], 0)), list(np.roll(value[1], 3)),
-                        list(np.roll(value[2], 2)), list(np.roll(value[3], 1))]
-        return shifted_list
 
     @staticmethod
     def galois_multiple(a, b):
