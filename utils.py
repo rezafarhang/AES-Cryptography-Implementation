@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 import numpy as np
 
 
@@ -117,9 +117,18 @@ class EncryptDecryption:
 
     @staticmethod
     def shift_rows(value: List[list]) -> List[list]:
-        shifted_list = [list(np.roll(value[0], 0)), list(np.roll(value[1], 1)),
-                        list(np.roll(value[2], 2)), list(np.roll(value[3], 3))]
-        return shifted_list
+        shifted_list = []
+        for i in range(4):
+            l = np.array(value)[:, i]
+            shifted_list.append(list(np.roll(l,-i)))
+
+        result = []
+        for j in range(4):
+            temp = []
+            for k in range(4):
+                temp.append(shifted_list[k][j])
+            result.append(temp)
+        return result
 
     @staticmethod
     def shift_rows_inv(value: List[list]) -> List[list]:
