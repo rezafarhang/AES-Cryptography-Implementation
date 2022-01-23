@@ -160,7 +160,11 @@ class EncryptDecryption:
         temp = np.array(mixed_columns)
         for i in range(4):
             result.append(list(temp[:, i]))
-        return result
+        res = ''
+        for j in range(4):
+            for k in range(4):
+                res += result[j][k]
+        return res
 
     def add_round_key(self, value: List[list]) -> List[list]:
         pass
